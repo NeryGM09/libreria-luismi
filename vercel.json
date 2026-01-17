@@ -1,0 +1,22 @@
+{
+  "buildCommand": "cd libreria-react && npm run build",
+  "outputDirectory": "libreria-react/dist",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "functions": {
+    "api/productos.js": {
+      "runtime": "nodejs18.x"
+    },
+    "api/pedidos.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
