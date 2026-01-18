@@ -2,9 +2,9 @@
   "name": "libreria-luismi",
   "version": "1.0.0",
   "description": "Catálogo de productos para Librería Luismi",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "build": "cd libreria-react && npm install && npm run build",
     "dev": "cd backend && npm start"
   },
