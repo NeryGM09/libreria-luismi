@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const dbPath = path.join(__dirname, '../libreria.db');
+const dbPath = process.env.NODE_ENV === 'production' ? '/tmp/libreria.db' : path.join(__dirname, '../libreria.db');
 
 const getDb = () => {
   return new Promise((resolve) => {
