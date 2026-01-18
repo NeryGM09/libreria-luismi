@@ -1,4 +1,14 @@
 {
   "buildCommand": "cd libreria-react && npm install && npm run build",
-  "outputDirectory": "libreria-react/dist"
+  "functions": {
+    "api/index.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.js"
+    }
+  ]
 }
