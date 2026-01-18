@@ -3,13 +3,11 @@ const path = require('path');
 
 const dbPath = path.join(__dirname, '../libreria.db');
 
-// Promisify database operations
 const getDb = () => {
   return new Promise((resolve) => {
     const db = new sqlite3.Database(dbPath);
     
     db.serialize(() => {
-      // Tabla productos
       db.run(`
       CREATE TABLE IF NOT EXISTS productos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,7 +19,6 @@ const getDb = () => {
       )
       `);
 
-      // Datos iniciales
       db.run(`
       INSERT OR IGNORE INTO productos (nombre, categoria, precio, stock, imagen) VALUES
       ('El Principito', 'Libros', 250, 10, 'https://via.placeholder.com/300x400?text=El+Principito'),
@@ -60,14 +57,10 @@ const dbRun = (db, sql, params = []) => {
 };
 
 module.exports = async (req, res) => {
-  // Configurar CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
   
   if (req.method === 'OPTIONS') {
     res.status(200).end();
@@ -98,14 +91,11 @@ module.exports = async (req, res) => {
       );
       
       db.close();
-      return res.status(201).json({ 
-        mensaje: 'Producto agregado', 
-        id: result.lastID 
-      });
+      return res.status(201).json({ mensaje: 'Producto agregado', id: result.lastID });
     }
 
     if (req.method === 'PUT') {
-      const { id } = req.query;
+      const id = req.query.id || req.body.id;
       const { nombre, categoria, precio, stock, imagen } = req.body;
 
       await dbRun(
@@ -119,10 +109,8 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'DELETE') {
-      const { id } = req.query;
-      
+      const id = req.query.id || req.body.id;
       await dbRun(db, 'DELETE FROM productos WHERE id = ?', [id]);
-      
       db.close();
       return res.status(200).json({ mensaje: 'Producto eliminado' });
     }

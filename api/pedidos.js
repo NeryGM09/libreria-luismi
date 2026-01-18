@@ -3,13 +3,11 @@ const path = require('path');
 
 const dbPath = path.join(__dirname, '../libreria.db');
 
-// Promisify database operations
 const getDb = () => {
   return new Promise((resolve) => {
     const db = new sqlite3.Database(dbPath);
     
     db.serialize(() => {
-      // Tabla pedidos
       db.run(`
       CREATE TABLE IF NOT EXISTS pedidos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,14 +43,10 @@ const dbRun = (db, sql, params = []) => {
 };
 
 module.exports = async (req, res) => {
-  // Configurar CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
   
   if (req.method === 'OPTIONS') {
     res.status(200).end();
@@ -65,7 +59,6 @@ module.exports = async (req, res) => {
     if (req.method === 'GET') {
       const pedidos = await dbAll(db, 'SELECT * FROM pedidos ORDER BY fecha DESC');
       
-      // Parsear JSON
       const pedidosParseados = pedidos.map(p => ({
         ...p,
         cliente: typeof p.cliente === 'string' ? JSON.parse(p.cliente) : p.cliente,
@@ -94,14 +87,11 @@ module.exports = async (req, res) => {
       );
       
       db.close();
-      return res.status(201).json({ 
-        mensaje: 'Pedido creado', 
-        id: result.lastID 
-      });
+      return res.status(201).json({ mensaje: 'Pedido creado', id: result.lastID });
     }
 
     if (req.method === 'PUT') {
-      const { id } = req.query;
+      const id = req.query.id || req.body.id;
       const { estado } = req.body;
 
       if (!estado) {
