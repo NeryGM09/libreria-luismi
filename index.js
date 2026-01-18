@@ -17,17 +17,17 @@ const pedidosHandler = require('./api/pedidos');
 // Rutas de API
 app.get('/api/productos', (req, res) => productosHandler(req, res));
 app.post('/api/productos', (req, res) => productosHandler(req, res));
-app.put('/api/productos', (req, res) => productosHandler(req, res));
-app.delete('/api/productos', (req, res) => productosHandler(req, res));
+app.put('/api/productos/:id', (req, res) => productosHandler(req, res));
+app.delete('/api/productos/:id', (req, res) => productosHandler(req, res));
 app.options('/api/productos', (req, res) => productosHandler(req, res));
 
 app.get('/api/pedidos', (req, res) => pedidosHandler(req, res));
 app.post('/api/pedidos', (req, res) => pedidosHandler(req, res));
-app.put('/api/pedidos', (req, res) => pedidosHandler(req, res));
+app.put('/api/pedidos/:id', (req, res) => pedidosHandler(req, res));
 app.options('/api/pedidos', (req, res) => pedidosHandler(req, res));
 
-// SPA fallback
-app.get('*', (req, res) => {
+// SPA fallback - debe ir al final
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'libreria-react/dist/index.html'));
 });
 
