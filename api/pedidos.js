@@ -1,8 +1,6 @@
-import sqlite3 from 'sqlite3';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dbPath = path.join(__dirname, '../libreria.db');
 
 // Promisify database operations
@@ -46,7 +44,7 @@ const dbRun = (db, sql, params = []) => {
   });
 };
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   // Configurar CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -127,4 +125,4 @@ export default async function handler(req, res) {
     console.error('Error:', error);
     res.status(500).json({ error: error.message });
   }
-}
+};

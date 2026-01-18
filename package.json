@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Catálogo de productos para Librería Luismi",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "build": "cd libreria-react && npm install && npm run build",
     "dev": "cd backend && npm start"
