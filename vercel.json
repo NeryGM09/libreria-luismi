@@ -1,4 +1,10 @@
 {
   "buildCommand": "cd libreria-react && npm install && npm run build",
-  "outputDirectory": "libreria-react/dist"
+  "outputDirectory": "libreria-react/dist",
+  "public": false,
+  "functions": {
+    "server.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
